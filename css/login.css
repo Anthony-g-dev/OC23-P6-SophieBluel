@@ -1,0 +1,25 @@
+input[type=submit] {
+  font-family: "Syne";
+  font-weight: 700;
+  color: white;
+  background-color: #1D6154;
+  margin: 2em auto;
+  width: 180px;
+  text-align: center;
+  border-radius: 60px;
+}
+
+.loginSection {
+  flex: 1;
+  width: 50%;
+  margin: 5em auto auto auto;
+}
+.loginSection__passwordReset {
+  color: #3D3D3D;
+  text-align: center;
+  text-decoration: underline;
+  font-weight: bold;
+}
+.loginSection__errorMessage {
+  color: #B1663C;
+}

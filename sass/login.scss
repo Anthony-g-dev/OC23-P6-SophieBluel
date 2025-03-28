@@ -1,0 +1,32 @@
+// IMPORTS
+@import "_vars";
+
+
+// ELEMENTS
+input[type="submit"] {
+	font-family: 'Syne';
+	font-weight: 700;
+	color: white;
+	background-color: $DeepBottleGreen;
+	margin : 2em auto;
+	width: 180px;
+	text-align: center;
+	border-radius: 60px ;
+}
+
+
+// CLASSES
+.loginSection {
+    flex: 1;
+	width: 50%;
+	margin: 5em auto auto auto;
+    &__passwordReset {
+        color: $ShadowGrey;
+        text-align: center;
+        text-decoration: underline;
+        font-weight: bold;
+    }
+    &__errorMessage {
+        color: $WindsorTan;
+    }
+}

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="fr">
+	<head>
+		<!-- Google Fonts -->
+		<link rel="preconnect" href="https://fonts.googleapis.com">
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Work+Sans&display=swap" rel="stylesheet">
+
+		<!-- Font Awesome -->
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+		<!-- Generic -->
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta name="description" content="">
+		<title>Sophie Bluel - Architecte d'intérieur</title>
+
+		<!-- Style Sheets -->
+		<link rel="stylesheet" href="./css/reset.css">
+		<link rel="stylesheet" href="./css/main.css">
+		<link rel="stylesheet" href="./css/login.css">
+	</head>
+	<body>
+		<header>
+			<h1>Sophie Bluel <span>Architecte d'inteérieur</span></h1>
+			<nav>
+				<ul>
+					<a href="index.html">projets</a>
+					<a href="index.html#contact">contact</a>
+					<a class="navlink--active loginLink" href="login.html">login</a>
+					<li><img src="./img/icons/instagram.png" alt="Instagram" width="19px"></li>
+				</ul>
+			</nav>
+		</header>
+		<main>
+			<section id="login" class="loginSection formContainer">
+				<h2>Log in</h2>
+				<h3 class="loginSection__errorMessage"></h3>
+				<form action="#" method="post">
+					<label for="mail">E-mail</label>
+					<input class="loginSection__mail" type="email" name="mail" id="mail">
+					<label for="password">Mot de passe</label>
+					<input class="loginSection__password" type="password" name="password" id="password">
+					<input class="loginSection__submit" type="submit" value="Se connecter">
+                    <a class="loginSection__passwordReset" href="#">Mot de passe oublié</a>
+				</form>
+			</section>
+		</main>
+		<footer>
+			<nav>
+				<a href="#">Mentions Légales</a>
+			</nav>
+		</footer>
+		<script src="js/login.js"></script>
+	</body>
+</html>

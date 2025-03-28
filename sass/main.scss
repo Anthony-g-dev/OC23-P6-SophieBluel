@@ -1,0 +1,165 @@
+// IMPORTS
+@import "_vars";
+
+
+// ELEMENTS
+body {
+	display: flex;
+	flex-direction: column;
+	max-width: 1140px;
+	min-height: 100vh;
+	margin:auto;
+	font-family: 'Work Sans';
+	font-size: 14px;
+}
+
+main {
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+}
+
+header {
+	display: flex;
+	justify-content: space-between;
+	margin: 50px 0
+}
+
+section {
+	margin: 50px 0
+}
+
+h1 {
+	display: flex;
+	flex-direction: column;
+	font-family: 'Syne';
+	font-size: 22px;
+	font-weight: 800;
+	color: $WindsorTan;
+    & > span {
+        font-family: 'Work Sans';
+	    font-size:10px;
+	    letter-spacing: 0.1em;
+    }
+}
+
+h2 {
+	font-family: 'Syne';
+	font-weight: 700;
+	font-size: 30px;
+	color: $DeepBottleGreen
+}
+
+a {
+	font-family: 'Work Sans';
+	transition: color 300ms ease;
+}
+
+nav ul {
+	display: flex;
+	align-items: center;
+	list-style-type: none;
+
+}
+
+nav a {
+	padding: 0 10px;
+	font-size: 1.2em;
+	cursor: pointer;
+}
+
+a:hover {
+	color: $WindsorTan;
+}
+
+footer {
+	padding: 22px 0;
+}
+footer nav a {
+	padding: 0;
+	display: flex;
+	justify-content: flex-end;
+}
+
+
+// CLASSES
+.formContainer {
+    width: 50%;
+	margin: auto;
+    & > * {
+        text-align: center;
+    }
+    h2 {
+        margin-bottom: 20px;
+    }
+    form {
+        text-align: left;
+        display: flex;
+        flex-direction: column;
+    }
+    input {
+        height: 50px;
+	    font-size: 1.2em;
+	    border: none;
+	    box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
+    }
+    label {
+        margin: 2em 0 1em 0;
+    }
+    textarea {
+        border: none;
+	    box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
+    }
+}
+
+.button {
+	padding: 9px 8px;
+	min-width: 100px;
+	width: fit-content;
+	color: $DeepBottleGreen;
+	background-color: white;
+	border: 1px solid $DeepBottleGreen;
+	border-radius: 60px;
+	font-family: "Syne";
+	font-size: 14px;
+	line-height: 19px;
+	transition: color 500ms ease, background-color 500ms ease;
+	text-align: center;
+	cursor: pointer;
+    &--active {
+        color: white;
+	    background-color: $DeepBottleGreen;
+    }
+	&:disabled {
+		color: white;
+		border-color: $QuickSilver;
+		background-color: $QuickSilver;
+	}
+}
+
+.form {
+	display: flex;
+	flex-direction: column;
+	&__label {
+		margin-bottom: 10px;
+		font-size: 14px;
+	}
+	&__textInput, &__selectInput {
+		padding: 16px;
+		box-shadow: 0px 4px 14px 0px rgba(0, 0, 0, 0.09);
+		color: $ShadowGrey2;
+		font-size: 14px;
+	}
+	&__submitButton {
+		margin: 0 auto;
+	}
+	&__group {
+		margin-bottom: 21px;
+		display: flex;
+		flex-direction: column;
+	}
+}
+
+.navlink--active {
+	font-weight: bold;
+}
