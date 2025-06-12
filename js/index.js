@@ -1,11 +1,8 @@
-// ROUTES
-// const WORKS_ROUTE = "http://localhost:5678/api/works";
-
 // DATA
 const DATA = {
-	works: [],
-	categories: [],
-}
+  works: [],
+  categories: [],
+};
 
 // ELEMENTS
 const FILTER_BUTTONS_CONTAINER = document.querySelector(".filters");
@@ -17,35 +14,82 @@ const WORKS_CONTAINER = document.querySelector(".gallery");
 const WORKS_TEMPLATE = document.getElementById("worksTemplate");
 
 // FUNCTIONS
-/** 
-	* Show the works in the works container
-	* @param {number} pCategoryID - The category ID to filter the works
-*/
-const showWorks = (pCategoryID) => {
-	// Clear the works container.
-	WORKS_CONTAINER.replaceChildren();
+const showWorks = (pCategoryID = "") => {
+  // Clear the works container.
+  WORKS_CONTAINER.replaceChildren();
 
-	// Get work's list and filter them if a category ID was passed.
-	let filteredList = (pCategoryID !== undefined) ? DATA["works"].filter((work) => work.category.id == pCategoryID) : DATA["works"];
+  // Get work's list and filter them if a category ID was passed.
+  let filteredList =
+    pCategoryID !== ""
+      ? DATA["works"].filter((work) => work.category.id == pCategoryID)
+      : DATA["works"];
 
-	// Append work's HTML content.
-	filteredList.forEach(work => {
-		// Clone the template.
-		const newWork = WORKS_TEMPLATE.content.cloneNode(true);
+  // Append work's HTML content.
+  filteredList.forEach((work) => {
+    // Clone the template.
+    const newWork = WORKS_TEMPLATE.content.cloneNode(true);
 
-		// Fill the template with work's data.
-		const workImage = newWork.querySelector("img");
-		workImage.src = work.imageUrl;
-		workImage.alt = work.title;
+    // Fill the template with work's data.
+    const workImage = newWork.querySelector("img");
+    workImage.src = work.imageUrl;
+    workImage.alt = work.title;
 
-		newWork.querySelector("figcaption").textContent = work.title;
+    newWork.querySelector("figcaption").textContent = work.title;
 
-		// Append the new work to the works container.
-		WORKS_CONTAINER.appendChild(newWork);
-	});
+    // Append the new work to the works container.
+    WORKS_CONTAINER.appendChild(newWork);
+  });
+};
+
+const showFilters = (pCategoryID = "") => {
+  // Clear the filters container.
+  FILTER_BUTTONS_CONTAINER.replaceChildren();
+	const FILTERS_BUTTONS = document.createDocumentFragment();
+
+  // Append filter's HTML content.
+  // "ALL" filter
+	const newButton = document.createElement("button");
+	newButton.classList.add("button", "filter", "button--active");
+	newButton.dataset.category_id = "";
+	newButton.textContent = "Tous";
+  FILTER_BUTTONS_CONTAINER.appendChild(newButton).addEventListener("click", (e) => {
+    filterCallback();
+  });
+	FILTERS_BUTTONS.appendChild(newButton);
+
+  // Per categories filters
+  for (const [pThisCategoryID, pCategoryName] of Object.entries(DATA["categories"])) {
+		const newButton = document.createElement("button");
+		newButton.classList.add("button", "filter");
+		newButton.dataset.category_id = pThisCategoryID;
+		newButton.textContent = pCategoryName;
+    FILTER_BUTTONS_CONTAINER.appendChild(newButton).addEventListener("click", (e) => {
+			filterCallback(pThisCategoryID);
+		});
+		FILTERS_BUTTONS.appendChild(newButton);
+  }
+
+	// Append the filters buttons to the filters container.
+	FILTER_BUTTONS_CONTAINER.appendChild(FILTERS_BUTTONS);
+
+  // Update the active filter button if a category ID was passed.
+	updateActiveFilter(pCategoryID);
+};
+
+// function to update the active filter button
+const updateActiveFilter = (pCategoryID) => {
+	document.querySelector(".filter.button--active").classList.remove("button--active");
+	document.querySelector(`[data-category_id="${pCategoryID}"]`).classList.add("button--active");
+}
+
+const filterCallback = (pCategoryID = "") => {
+	showWorks(pCategoryID);
+	updateActiveFilter(pCategoryID);
 }
 
 // INITIALIZATION
 getWorksList().then((worksList) => {
-	showWorks();
+  showWorks();
+  getCategoriesList(worksList);
+  showFilters();
 });
