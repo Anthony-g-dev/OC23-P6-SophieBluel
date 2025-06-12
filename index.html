@@ -22,7 +22,7 @@
 	</head>
 	<body>
 		<header>
-			<h1>Sophie Bluel <span>Architecte d'inteérieur</span></h1>
+			<h1>Sophie Bluel <span>Architecte d'intérieur</span></h1>
 			<nav>
 				<ul>
 					<a class="navlink--active" href="index.html">projets</a>
@@ -128,7 +128,15 @@
 				<a href="#">Mentions Légales</a>
 			</nav>
 		</footer>
-		<script src="js/main.js"></script>
+		<!-- TEMPLATES -->
+		 <template id="worksTemplate">
+			<figure>
+				<img src="" alt="">
+				<figcaption>${pWorkData.title}</figcaption>
+			</figure>
+		 </template>
+		<!-- SCRIPTS -->
+		<script src="js/works.js"></script>
 		<script src="js/index.js"></script>
 	</body>
 </html>
