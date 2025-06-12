@@ -108,6 +108,7 @@ footer nav a {
 .button {
   padding: 9px 8px;
   min-width: 100px;
+  width: -moz-fit-content;
   width: fit-content;
   color: #1D6154;
   background-color: white;

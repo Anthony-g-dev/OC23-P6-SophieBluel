@@ -84,32 +84,32 @@ footer nav a {
 
 // CLASSES
 .formContainer {
-    width: 50%;
+  width: 50%;
 	margin: auto;
-    & > * {
-        text-align: center;
-    }
-    h2 {
-        margin-bottom: 20px;
-    }
-    form {
-        text-align: left;
-        display: flex;
-        flex-direction: column;
-    }
-    input {
-        height: 50px;
-	    font-size: 1.2em;
-	    border: none;
-	    box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
-    }
-    label {
-        margin: 2em 0 1em 0;
-    }
-    textarea {
-        border: none;
-	    box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
-    }
+	& > * {
+		text-align: center;
+	}
+	h2 {
+		margin-bottom: 20px;
+	}
+	form {
+		text-align: left;
+		display: flex;
+		flex-direction: column;
+	}
+	input {
+		height: 50px;
+		font-size: 1.2em;
+		border: none;
+		box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
+	}
+	label {
+		margin: 2em 0 1em 0;
+	}
+	textarea {
+		border: none;
+		box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
+	}
 }
 
 .button {
@@ -126,10 +126,10 @@ footer nav a {
 	transition: color 500ms ease, background-color 500ms ease;
 	text-align: center;
 	cursor: pointer;
-    &--active {
-        color: white;
-	    background-color: $DeepBottleGreen;
-    }
+	&--active {
+		color: white;
+		background-color: $DeepBottleGreen;
+	}
 	&:disabled {
 		color: white;
 		border-color: $QuickSilver;
