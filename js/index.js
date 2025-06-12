@@ -5,6 +5,7 @@ const DATA = {
 };
 
 // ELEMENTS
+const EDITION_MODE_BANNER = document.querySelector(".editionModeBanner");
 const FILTER_BUTTONS_CONTAINER = document.querySelector(".filters");
 const LOGIN_LINK = document.querySelector(".loginLink");
 const PORTOFOLIO_TITLE = document.querySelector(".portfolioSection__title");
@@ -82,9 +83,28 @@ const updateActiveFilter = (pCategoryID) => {
 	document.querySelector(`[data-category_id="${pCategoryID}"]`).classList.add("button--active");
 }
 
+// Callback called when a filter button is clicked.
 const filterCallback = (pCategoryID = "") => {
 	showWorks(pCategoryID);
 	updateActiveFilter(pCategoryID);
+}
+
+// Change the login link to a logout link and add the logout callback.
+const allowLogout = () => {
+	// Switch the id to logoutLink
+	LOGIN_LINK.setAttribute("id", "logoutLink");
+
+	// Select the element and change her text
+	LOGOUT_LINK = document.getElementById("logoutLink");
+	LOGOUT_LINK.textContent = "logout";
+
+	// Add the callback to the logout link
+	LOGOUT_LINK.addEventListener("click", (e) => {
+			e.preventDefault();
+			sessionStorage.removeItem("userToken");
+			window.location.href = "index.html";
+			EDITION_MODE_BANNER.style.display = "none";
+	});
 }
 
 // INITIALIZATION
@@ -93,3 +113,10 @@ getWorksList().then((worksList) => {
   getCategoriesList(worksList);
   showFilters();
 });
+
+// Adapt the page if the user is connected
+if (sessionStorage.userToken) {
+	EDITION_MODE_BANNER.style.display = "flex";
+	document.body.style.marginTop = `${document.querySelector(".editionModeBanner").clientHeight}px`;
+	allowLogout();
+}
