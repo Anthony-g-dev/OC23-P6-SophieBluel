@@ -1,34 +1,36 @@
 // DATA
 const DATA = {
   works: [],
-  categories: [],
+  categories: {},
 };
 
 // ELEMENTS
-const EDITION_MODE_BANNER = document.querySelector(".editionModeBanner");
-const FILTER_BUTTONS_CONTAINER = document.querySelector(".filters");
-const LOGIN_LINK = document.querySelector(".loginLink");
-const PORTOFOLIO_TITLE = document.querySelector(".portfolioSection__title");
-const WORKS_CONTAINER = document.querySelector(".gallery");
+const ELM_EDITION_MODE_BANNER = document.querySelector(".editionModeBanner");
+const ELM_FILTER_BUTTONS_CONTAINER = document.querySelector(".filters");
+const ELM_LOGIN_LINK = document.querySelector(".loginLink");
+const ELM_PORTOFOLIO_TITLE = document.querySelector(".portfolioSection__title");
+const ELM_WORKS_CONTAINER = document.querySelector(".gallery");
+const ELM_MODAL_GALLERY_VIEWER = document.querySelector("#galleryViewerModal");
+const ELM_MODAL_ADD_WORK = document.querySelector("#addWorkModal");
 
 // TEMPLATES ELEMENTS
-const WORKS_TEMPLATE = document.getElementById("worksTemplate");
+const TLE_WORKS_TEMPLATE = document.getElementById("worksTemplate");
+
+// TEMPLATES LITERALS
+const TLL_MODIFICATION_LINK = `<a href="#" class="modificationLink"><i class="fa-regular fa-pen-to-square"></i> modifier</a>`
 
 // FUNCTIONS
 const showWorks = (pCategoryID = "") => {
   // Clear the works container.
-  WORKS_CONTAINER.replaceChildren();
+  ELM_WORKS_CONTAINER.replaceChildren();
 
   // Get work's list and filter them if a category ID was passed.
-  let filteredList =
-    pCategoryID !== ""
-      ? DATA["works"].filter((work) => work.category.id == pCategoryID)
-      : DATA["works"];
+  let filteredList = (pCategoryID !== "") ? DATA["works"].filter((work) => work.category.id == pCategoryID) : DATA["works"];
 
   // Append work's HTML content.
   filteredList.forEach((work) => {
     // Clone the template.
-    const newWork = WORKS_TEMPLATE.content.cloneNode(true);
+    const newWork = TLE_WORKS_TEMPLATE.content.cloneNode(true);
 
     // Fill the template with work's data.
     const workImage = newWork.querySelector("img");
@@ -38,13 +40,13 @@ const showWorks = (pCategoryID = "") => {
     newWork.querySelector("figcaption").textContent = work.title;
 
     // Append the new work to the works container.
-    WORKS_CONTAINER.appendChild(newWork);
+    ELM_WORKS_CONTAINER.appendChild(newWork);
   });
 };
 
 const showFilters = (pCategoryID = "") => {
   // Clear the filters container.
-  FILTER_BUTTONS_CONTAINER.replaceChildren();
+  ELM_FILTER_BUTTONS_CONTAINER.replaceChildren();
 	const FILTERS_BUTTONS = document.createDocumentFragment();
 
   // Append filter's HTML content.
@@ -53,7 +55,7 @@ const showFilters = (pCategoryID = "") => {
 	newButton.classList.add("button", "filter", "button--active");
 	newButton.dataset.category_id = "";
 	newButton.textContent = "Tous";
-  FILTER_BUTTONS_CONTAINER.appendChild(newButton).addEventListener("click", (e) => {
+  ELM_FILTER_BUTTONS_CONTAINER.appendChild(newButton).addEventListener("click", (e) => {
     filterCallback();
   });
 	FILTERS_BUTTONS.appendChild(newButton);
@@ -64,14 +66,14 @@ const showFilters = (pCategoryID = "") => {
 		newButton.classList.add("button", "filter");
 		newButton.dataset.category_id = pThisCategoryID;
 		newButton.textContent = pCategoryName;
-    FILTER_BUTTONS_CONTAINER.appendChild(newButton).addEventListener("click", (e) => {
+    ELM_FILTER_BUTTONS_CONTAINER.appendChild(newButton).addEventListener("click", (e) => {
 			filterCallback(pThisCategoryID);
 		});
 		FILTERS_BUTTONS.appendChild(newButton);
   }
 
 	// Append the filters buttons to the filters container.
-	FILTER_BUTTONS_CONTAINER.appendChild(FILTERS_BUTTONS);
+	ELM_FILTER_BUTTONS_CONTAINER.appendChild(FILTERS_BUTTONS);
 
   // Update the active filter button if a category ID was passed.
 	updateActiveFilter(pCategoryID);
@@ -92,18 +94,18 @@ const filterCallback = (pCategoryID = "") => {
 // Change the login link to a logout link and add the logout callback.
 const allowLogout = () => {
 	// Switch the id to logoutLink
-	LOGIN_LINK.setAttribute("id", "logoutLink");
+	ELM_LOGIN_LINK.setAttribute("id", "logoutLink");
 
 	// Select the element and change her text
-	LOGOUT_LINK = document.getElementById("logoutLink");
+	const LOGOUT_LINK = document.getElementById("logoutLink");
 	LOGOUT_LINK.textContent = "logout";
 
 	// Add the callback to the logout link
 	LOGOUT_LINK.addEventListener("click", (e) => {
-			e.preventDefault();
-			sessionStorage.removeItem("userToken");
-			window.location.href = "index.html";
-			EDITION_MODE_BANNER.style.display = "none";
+    e.preventDefault();
+    sessionStorage.removeItem("userToken");
+    window.location.href = "index.html";
+    ELM_EDITION_MODE_BANNER.style.display = "none";
 	});
 }
 
@@ -112,11 +114,28 @@ getWorksList().then((worksList) => {
   showWorks();
   getCategoriesList(worksList);
   showFilters();
-});
 
-// Adapt the page if the user is connected
-if (sessionStorage.userToken) {
-	EDITION_MODE_BANNER.style.display = "flex";
-	document.body.style.marginTop = `${document.querySelector(".editionModeBanner").clientHeight}px`;
-	allowLogout();
-}
+  // Adapt the page if the user is connected
+  if (sessionStorage.userToken) {
+    ELM_EDITION_MODE_BANNER.style.display = "flex";
+    document.body.style.marginTop = `${document.querySelector(".editionModeBanner").clientHeight}px`;
+    allowLogout();
+
+    // Add the modification link next to the portofolio's section title
+    const modificationLink = createHTMLElementFromString(TLL_MODIFICATION_LINK);
+    const ELM_MODIFICATION_LINK = ELM_PORTOFOLIO_TITLE.appendChild(modificationLink);
+    ELM_MODIFICATION_LINK.addEventListener("click", (e) => {
+      e.preventDefault();
+      // Open the edition modal
+      // Load the works in the edition modal then show it
+      // [TODO] LOAD Works
+      ELM_MODAL_GALLERY_VIEWER.showModal();
+      // Add the callback for the add picture button
+      ELM_MODAL_GALLERY_VIEWER.querySelector(".editionModal__action").addEventListener("click", (e) => {
+        e.preventDefault();
+        // Open the add picture modal
+        ELM_MODAL_ADD_WORK.showModal();
+      });
+    });
+  }
+});

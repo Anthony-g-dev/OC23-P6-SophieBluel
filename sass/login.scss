@@ -17,16 +17,16 @@ input[type="submit"] {
 
 // CLASSES
 .loginSection {
-    flex: 1;
+  flex: 1;
 	width: 50%;
 	margin: 5em auto auto auto;
     &__passwordReset {
-        color: $ShadowGrey;
-        text-align: center;
-        text-decoration: underline;
-        font-weight: bold;
+			color: $ShadowGrey;
+			text-align: center;
+			text-decoration: underline;
+			font-weight: bold;
     }
     &__errorMessage {
-        color: $WindsorTan;
+      color: $WindsorTan;
     }
 }
