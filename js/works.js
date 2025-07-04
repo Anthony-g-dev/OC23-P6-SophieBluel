@@ -23,7 +23,7 @@ const addWork = async () => {
       // Update works
       getWorksList().then((worksList) => {
         document.querySelector(".addPictureForm").reset();
-        indexElements["addPictureModal"].querySelector(".addPictureForm__pictureInputContainer").replaceChildren("")
+        ELM_MODAL_ADD_WORK.querySelector(".addPictureForm__pictureInputContainer").replaceChildren("")
         getCategoriesList(worksList);
         showWorks();
         loadModalGallery();
