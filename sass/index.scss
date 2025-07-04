@@ -157,6 +157,35 @@
         font-weight: 400;
         font-family: "Work Sans", sans-serif;
     }
+    &__gallery {
+        margin-bottom: 66px;
+        display: grid;
+        grid-template-columns: repeat(5, 77px);
+        grid-auto-rows: 103px;
+        gap: 29px 9px;
+    }
+    &__galleryItem {
+        position: relative;
+        img {
+            width: 100%;
+            height: auto;
+        }
+    }
+    &__galleryDeleteAction {
+        padding: 3px;
+        position: absolute;
+        top: 6px;
+        right: 6px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        color: white;
+        background-color: black;
+        border-radius: 2px;
+        font-size: 10px;
+        cursor: pointer;
+    }
 }
 
 #addWorkForm {

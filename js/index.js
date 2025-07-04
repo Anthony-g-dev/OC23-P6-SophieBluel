@@ -11,13 +11,16 @@ const ELM_LOGIN_LINK = document.querySelector(".loginLink");
 const ELM_PORTOFOLIO_TITLE = document.querySelector(".portfolioSection__title");
 const ELM_WORKS_CONTAINER = document.querySelector(".gallery");
 const ELM_MODAL_GALLERY_VIEWER = document.querySelector("#galleryViewerModal");
+const ELM_MODAL_GALLERY = document.querySelector(".editionModal__gallery");
 const ELM_MODAL_ADD_WORK = document.querySelector("#addWorkModal");
 
 // TEMPLATES ELEMENTS
 const TLE_WORKS_TEMPLATE = document.getElementById("worksTemplate");
+const TLE_GALLERY_ITEM_TEMPLATE = document.getElementById("galleryItemTemplate");
 
 // TEMPLATES LITERALS
 const TLL_MODIFICATION_LINK = `<a href="#" class="modificationLink"><i class="fa-regular fa-pen-to-square"></i> modifier</a>`
+const TTL_CATEGORY_OPTION = (pId) => `<option value="${pId}">${DATA["categories"][pId]}</option>`;
 
 // FUNCTIONS
 const showWorks = (pCategoryID = "") => {
@@ -109,6 +112,52 @@ const allowLogout = () => {
 	});
 }
 
+const loadModalGallery = () => {
+  // // Clear the works container.
+  ELM_MODAL_GALLERY.replaceChildren();
+
+  // // Get work's list.
+  DATA["works"].forEach(work => {
+    // Clone the template.
+    const newItem = TLE_GALLERY_ITEM_TEMPLATE.content.cloneNode(true);
+
+    // Fill the template with item's data.
+    const itemImage = newItem.querySelector("img");
+    itemImage.src = work.imageUrl;
+    itemImage.alt = work.title;
+
+    const itemIcon = newItem.querySelector("i");
+    itemIcon.setAttribute("data-id", work.id);
+
+    // Append the new work to the works container.
+    ELM_MODAL_GALLERY.appendChild(newItem);
+  });
+}
+
+const addGalleryDeleteAction = () => {
+  ELM_MODAL_GALLERY.addEventListener("click", (e) => {
+    if (e.target.classList.contains("editionModal__galleryDeleteAction")) {
+      e.preventDefault();
+      const elementId = e.target.dataset.id;
+      const elementTitle = DATA["works"].find((work) => work.id == elementId).title;
+      const confirmation = confirm(`Voulez-vous vraiment supprimer "${elementTitle}" ?`);
+      if (confirmation) {
+        // deleteWork(parseInt(elementId));
+      }
+    }
+  })
+}
+
+const loadModalCategory = () => {
+  // Clear the categories container.
+  ELM_MODAL_ADD_WORK.querySelector("#categorySelector").replaceChildren();
+
+  // Get categories's list.
+  Object.keys(DATA["categories"]).forEach(id => {
+    ELM_MODAL_ADD_WORK.querySelector("#categorySelector").appendChild(createHTMLElementFromString(TTL_CATEGORY_OPTION(id)));
+  });
+}
+
 // INITIALIZATION
 getWorksList().then((worksList) => {
   showWorks();
@@ -117,6 +166,10 @@ getWorksList().then((worksList) => {
 
   // Adapt the page if the user is connected
   if (sessionStorage.userToken) {
+    loadModalGallery();
+    addGalleryDeleteAction();
+    loadModalCategory();
+
     ELM_EDITION_MODE_BANNER.style.display = "flex";
     document.body.style.marginTop = `${document.querySelector(".editionModeBanner").clientHeight}px`;
     allowLogout();
@@ -128,14 +181,32 @@ getWorksList().then((worksList) => {
       e.preventDefault();
       // Open the edition modal
       // Load the works in the edition modal then show it
-      // [TODO] LOAD Works
       ELM_MODAL_GALLERY_VIEWER.showModal();
       // Add the callback for the add picture button
       ELM_MODAL_GALLERY_VIEWER.querySelector(".editionModal__action").addEventListener("click", (e) => {
         e.preventDefault();
         // Open the add picture modal
         ELM_MODAL_ADD_WORK.showModal();
+        ELM_MODAL_GALLERY_VIEWER.close();
       });
+    });
+
+    // Add the close callback for the modals
+    ELM_MODAL_GALLERY_VIEWER.querySelector(".editionModal__close").addEventListener("click", (e) => {
+      e.preventDefault();
+      ELM_MODAL_GALLERY_VIEWER.close();
+    });
+
+    ELM_MODAL_ADD_WORK.querySelector(".editionModal__close").addEventListener("click", (e) => {
+      e.preventDefault();
+      ELM_MODAL_ADD_WORK.close();
+    });
+
+    // Add the callback to open the gallery viewer modal if back button is clicked on the add picture modal
+    ELM_MODAL_ADD_WORK.querySelector(".editionModal__back").addEventListener("click", (e) => {
+      e.preventDefault();
+      ELM_MODAL_GALLERY_VIEWER.showModal();
+      ELM_MODAL_ADD_WORK.close();
     });
   }
 });
