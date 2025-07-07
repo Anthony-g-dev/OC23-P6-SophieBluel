@@ -11,7 +11,7 @@ const addWork = async () => {
 
   try {
     // Send the Request
-    const res = await fetch(routes["works"], {
+    const res = await fetch(WORKS_ROUTE, {
       method: "POST",
       headers: {
         "Authorization": `Bearer ${sessionStorage.userToken}`,
@@ -39,7 +39,7 @@ const addWork = async () => {
 const deleteWork = async (pId) => {
   try {
     // Send the Request
-    const res = await fetch(`${routes["works"]}/${pId}`, {
+    const res = await fetch(`${WORKS_ROUTE}/${pId}`, {
       method: "DELETE",
       headers: {
         "Accept": "*/*",
@@ -52,7 +52,7 @@ const deleteWork = async (pId) => {
       showWorks();
       loadModalGallery();
     } else { // Error catcher
-      if (res.status == 401) {
+      if (res.status === 401) {
         throw new Error("Accès non autorisé. Veuillez vous connecter.");
       } else {
         throw new Error("Erreur réseau");

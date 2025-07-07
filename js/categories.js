@@ -5,7 +5,7 @@ const getCategoriesList = (pWorksList) => {
 
   // Get all categories from the works list
   pWorksList.forEach((work) => {
-    if (DATA["categories"][work.category.id] === undefined) {
+    if (!DATA["categories"][work.category.id]) {
       DATA["categories"][work.category.id] = work.category.name;
     }
     return DATA["categories"];

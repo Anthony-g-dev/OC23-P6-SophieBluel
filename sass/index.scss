@@ -71,7 +71,7 @@
     left: 0;
     width: 100vw;
     padding: 20px 0;
-    display: none;
+    display: flex;
     flex-direction: row;
     justify-content: center;
     align-items: center;
@@ -79,6 +79,9 @@
     background-color: black;
     &__text {
         color: white;
+    }
+    &.hidden {
+        display: none;
     }
 }
 

@@ -142,7 +142,7 @@ const addGalleryDeleteAction = () => {
       const elementTitle = DATA["works"].find((work) => work.id == elementId).title;
       const confirmation = confirm(`Voulez-vous vraiment supprimer "${elementTitle}" ?`);
       if (confirmation) {
-        // deleteWork(parseInt(elementId));
+        deleteWork(parseInt(elementId));
       }
     }
   })
@@ -170,8 +170,10 @@ getWorksList().then((worksList) => {
     addGalleryDeleteAction();
     loadModalCategory();
 
-    ELM_EDITION_MODE_BANNER.style.display = "flex";
+    // Show the edition mode banner
+    ELM_EDITION_MODE_BANNER.classList.remove("hidden");
     document.body.style.marginTop = `${document.querySelector(".editionModeBanner").clientHeight}px`;
+    // Convert the login link to a logout link
     allowLogout();
 
     // Add the modification link next to the portofolio's section title
@@ -180,7 +182,6 @@ getWorksList().then((worksList) => {
     ELM_MODIFICATION_LINK.addEventListener("click", (e) => {
       e.preventDefault();
       // Open the edition modal
-      // Load the works in the edition modal then show it
       ELM_MODAL_GALLERY_VIEWER.showModal();
       // Add the callback for the add picture button
       ELM_MODAL_GALLERY_VIEWER.querySelector(".editionModal__action").addEventListener("click", (e) => {
