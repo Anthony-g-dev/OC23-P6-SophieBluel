@@ -5,9 +5,9 @@ const WORKS_ROUTE = "http://localhost:5678/api/works";
 const addWork = async () => {
   // Create Request Body
   const reqBody = new FormData();
-  reqBody.append("image", indexElements['addPictureModal__picture'].files[0]);
-  reqBody.append("title", indexElements['addPictureModal__title'].value);
-  reqBody.append("category", indexElements["addPictureModal__categorySelector"].value);
+  reqBody.append("image", ELM_MODAL_ADD_WORK.querySelector("#addWorkForm__picture").files[0]);
+  reqBody.append("title", ELM_MODAL_ADD_WORK.querySelector("#addWorkForm__title").value);
+  reqBody.append("category", ELM_MODAL_ADD_WORK.querySelector("#addWorkForm__categorySelector").value);
 
   try {
     // Send the Request
@@ -22,8 +22,12 @@ const addWork = async () => {
     if (res.ok) {
       // Update works
       getWorksList().then((worksList) => {
-        document.querySelector(".addPictureForm").reset();
-        ELM_MODAL_ADD_WORK.querySelector(".addPictureForm__pictureInputContainer").replaceChildren("")
+        // Reset the form and hide the preview
+        ELM_MODAL_ADD_WORK.querySelector("#addWorkForm").reset();
+        ELM_MODAL_ADD_WORK.querySelector(".addWorkForm__previewImage").src = "";
+        ELM_MODAL_ADD_WORK.querySelector(".addWorkForm__preview").classList.toggle("hidden");
+        ELM_MODAL_ADD_WORK.querySelector(".addWorkForm__imageInput").classList.toggle("hidden");
+        
         getCategoriesList(worksList);
         showWorks();
         loadModalGallery();

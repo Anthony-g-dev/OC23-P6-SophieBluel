@@ -113,18 +113,23 @@
 			<div class="editionModal__body">
 				<form action="#" class="editionModal__form form" id="addWorkForm">
 					<div class="form__group form__group--file">
-						<i class="form__icon fa-regular fa-image"></i>
-						<label for="picture" class="button form__button">+ Ajouter photo</label>
-						<input type="file" id="picture" name="picture" class="form__input form__input--file" accept=".jpg, .png" />
-						<span class="form__hint">jpg, png : 4 Mo max</span>
+						<div class="addWorkForm__imageInput">
+							<i class="form__icon fa-regular fa-image"></i>
+							<label for="addWorkForm__picture" class="button form__button">+ Ajouter photo</label>
+							<input type="file" id="addWorkForm__picture" name="picture" class="form__input form__input--file" accept=".jpg, .png" />
+							<span class="form__hint">jpg, png : 4 Mo max</span>
+						</div>
+						<div class="addWorkForm__preview hidden">
+							<img src="" alt="Aperçu de l'image" class="addWorkForm__previewImage" />
+						</div>
 					</div>
 					<div class="form__group">
 						<label for="title" class="form__label">Titre</label>
-						<input type="text" id="title" name="title" class="form__input" />
+						<input type="text" id="addWorkForm__title" name="title" class="form__input" />
 					</div>
 					<div class="form__group">
 						<label for="categorySelector" class="form__label">Catégorie</label>
-						<select id="categorySelector" name="categorySelector" class="form__input"></select>
+						<select id="addWorkForm__categorySelector" name="categorySelector" class="form__input"></select>
 					</div>
 					<div class="form__divider"></div>
 				</form>
@@ -132,7 +137,7 @@
 
 			<!-- Pied -->
 			<div class="editionModal__footer">
-				<input type="submit" form="addWorkForm" class="editionModal__action form__submitButton button" value="Valider" disabled />
+				<input type="submit" form="addWorkForm" class="editionModal__action form__submitButton button button--active" value="Valider" disabled />
 			</div>
 		</dialog>
 		<!-- TEMPLATES -->

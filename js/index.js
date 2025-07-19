@@ -150,11 +150,11 @@ const addGalleryDeleteAction = () => {
 
 const loadModalCategory = () => {
   // Clear the categories container.
-  ELM_MODAL_ADD_WORK.querySelector("#categorySelector").replaceChildren();
+  ELM_MODAL_ADD_WORK.querySelector("#addWorkForm__categorySelector").replaceChildren();
 
   // Get categories's list.
   Object.keys(DATA["categories"]).forEach(id => {
-    ELM_MODAL_ADD_WORK.querySelector("#categorySelector").appendChild(createHTMLElementFromString(TTL_CATEGORY_OPTION(id)));
+    ELM_MODAL_ADD_WORK.querySelector("#addWorkForm__categorySelector").appendChild(createHTMLElementFromString(TTL_CATEGORY_OPTION(id)));
   });
 }
 
@@ -208,6 +208,25 @@ getWorksList().then((worksList) => {
       e.preventDefault();
       ELM_MODAL_GALLERY_VIEWER.showModal();
       ELM_MODAL_ADD_WORK.close();
+    });
+
+    // Add the picture preview on change
+    ELM_MODAL_ADD_WORK.querySelector("#addWorkForm__picture").addEventListener("change", (e) => {
+      const [file] = ELM_MODAL_ADD_WORK.querySelector("#addWorkForm__picture").files;
+      if (file) {
+        ELM_MODAL_ADD_WORK.querySelector(".addWorkForm__previewImage").src = window.URL.createObjectURL(file);
+        ELM_MODAL_ADD_WORK.querySelector(".addWorkForm__imageInput").classList.toggle("hidden");
+        ELM_MODAL_ADD_WORK.querySelector(".addWorkForm__preview").classList.toggle("hidden");
+        ELM_MODAL_ADD_WORK.querySelector(".editionModal__action").disabled = false;
+      }
+    });
+
+    // Add the submit callback
+    ELM_MODAL_ADD_WORK.querySelector(".editionModal__action").addEventListener("click", (e) => {
+      e.preventDefault();
+      addWork();
+      ELM_MODAL_ADD_WORK.close();
+      ELM_MODAL_GALLERY_VIEWER.showModal();
     });
   }
 });

@@ -183,6 +183,9 @@
   font-size: 10px;
   cursor: pointer;
 }
+.editionModal__action {
+  min-width: 237px;
+}
 
 #addWorkForm .form__group--file {
   margin-bottom: 30px;
@@ -211,4 +214,18 @@
 #addWorkForm .form__group--file span {
   color: #444444;
   font-size: 10px;
+}
+
+.addWorkForm__imageInput {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+}
+.addWorkForm__preview {
+  overflow: hidden;
+}
+.addWorkForm__previewImage {
+  height: 100%;
 }
