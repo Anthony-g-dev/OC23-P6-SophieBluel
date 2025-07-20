@@ -42,10 +42,10 @@ const addGalleryDeleteAction = () => {
 }
 
 const loadModalCategory = () => {
-  ELM_MODAL_ADD_WORK.querySelector("#addWorkForm__categorySelector").replaceChildren();
+  ELM_MODAL_ADD_WORK.querySelector("#addWorkForm__category").replaceChildren();
 
   Object.keys(DATA["categories"]).forEach(id => {
-    ELM_MODAL_ADD_WORK.querySelector("#addWorkForm__categorySelector").appendChild(createHTMLElementFromString(TTL_CATEGORY_OPTION(id)));
+    ELM_MODAL_ADD_WORK.querySelector("#addWorkForm__category").appendChild(createHTMLElementFromString(TTL_CATEGORY_OPTION(id)));
   });
 }
 
@@ -79,8 +79,8 @@ const setupModalEvents = () => {
   });
 
   // On change of the file input in the add work modal, show the preview image and enable the submit button
-  ELM_MODAL_ADD_WORK.querySelector("#addWorkForm__picture").addEventListener("change", (e) => {
-    const [file] = ELM_MODAL_ADD_WORK.querySelector("#addWorkForm__picture").files;
+  ELM_MODAL_ADD_WORK.querySelector("#addWorkForm__image").addEventListener("change", (e) => {
+    const [file] = ELM_MODAL_ADD_WORK.querySelector("#addWorkForm__image").files;
     if (file) {
       ELM_MODAL_ADD_WORK.querySelector(".addWorkForm__previewImage").src = window.URL.createObjectURL(file);
       ELM_MODAL_ADD_WORK.querySelector(".addWorkForm__imageInput").classList.toggle("hidden");

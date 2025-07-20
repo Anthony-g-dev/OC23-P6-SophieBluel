@@ -17,40 +17,44 @@ const DEBOUNCE_DELAY = 300; // 300ms
 const validateAddWorkForm = () => {
   const formData = new FormData(ELM_ADD_WORK_FORM);
 
-  const image = formData.get("picture");
+  const image = formData.get("image");
   const title = formData.get("title");
-  const category = formData.get("categorySelector");
+  const category = formData.get("category");
 
   // Validate the image existence, size and type
-  if (!(image && image instanceof File && image.size > 0)) {return "Image is required."}
-  if (image.size > FOUR_MB) {return "Image size is too big. Max size is 4MB."}
-  if (!ALLOWED_IMAGE_TYPES.includes(image.type)) {return "Invalid image type. Allowed types are: jpg, jpeg, png."}
+  if (!(image && image instanceof File && image.size > 0)) {return "IMAGE ERROR: Image is required."}
+  if (image.size > FOUR_MB) {return "IMAGE ERROR: Image size is too big. Max size is 4MB."}
+  if (!ALLOWED_IMAGE_TYPES.includes(image.type)) {return "IMAGE ERROR: Invalid image type. Allowed types are: jpg, jpeg, png."}
   
   // Validate the title
-  if (title.trim() === "") {return "Title is required."}
+  if (title.trim() === "") {return "TITLE ERROR: Title is required."}
 
   // Validate the category
-  if (!DATA["categories"][category]) {return "Incorrect category."}
+  if (!DATA["categories"][category]) {return "CATEGORY ERROR: Incorrect category."}
 }
 
 const updateSubmitButtonState = () => {
   const error = validateAddWorkForm();
+  // If an Image error occured, reset the image input
+  if (error && error.includes("IMAGE ERROR")) {resetImageInput(); handleFormError(error);}
   // If there is no error, enable the submit button else disable it
   ELM_MODAL_ADD_WORK.querySelector(".editionModal__action").disabled = !!error;
 }
 
 const handleFormError = (error) => {
   console.error(error);
-  resetAddWorkForm();
 }
 
-const resetAddWorkForm = () => {
-  // Reset the form
-  ELM_ADD_WORK_FORM.reset();
+const resetImageInput = () => {
   // Remove the preview and show the image input
   ELM_MODAL_ADD_WORK.querySelector(".addWorkForm__previewImage").src = "";
   ELM_MODAL_ADD_WORK.querySelector(".addWorkForm__preview").classList.add("hidden");
   ELM_MODAL_ADD_WORK.querySelector(".addWorkForm__imageInput").classList.remove("hidden");
+}
+
+const resetAddWorkForm = () => {
+  ELM_ADD_WORK_FORM.reset();
+  resetImageInput();
 }
 
 const addWork = async () => {
@@ -59,7 +63,7 @@ const addWork = async () => {
   
   // Validate the form
   const error = validateAddWorkForm();
-  if (error) {handleFormError(error); return;};
+  if (error) {handleFormError(error); resetAddWorkForm(); return;};
 
   try {
     // Send the Request
