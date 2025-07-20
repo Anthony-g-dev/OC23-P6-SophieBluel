@@ -10,17 +10,12 @@ const ELM_FILTER_BUTTONS_CONTAINER = document.querySelector(".filters");
 const ELM_LOGIN_LINK = document.querySelector(".loginLink");
 const ELM_PORTOFOLIO_TITLE = document.querySelector(".portfolioSection__title");
 const ELM_WORKS_CONTAINER = document.querySelector(".gallery");
-const ELM_MODAL_GALLERY_VIEWER = document.querySelector("#galleryViewerModal");
-const ELM_MODAL_GALLERY = document.querySelector(".editionModal__gallery");
-const ELM_MODAL_ADD_WORK = document.querySelector("#addWorkModal");
 
 // TEMPLATES ELEMENTS
 const TLE_WORKS_TEMPLATE = document.getElementById("worksTemplate");
-const TLE_GALLERY_ITEM_TEMPLATE = document.getElementById("galleryItemTemplate");
 
 // TEMPLATES LITERALS
 const TLL_MODIFICATION_LINK = `<a href="#" class="modificationLink"><i class="fa-regular fa-pen-to-square"></i> modifier</a>`
-const TTL_CATEGORY_OPTION = (pId) => `<option value="${pId}">${DATA["categories"][pId]}</option>`;
 
 // FUNCTIONS
 const showWorks = (pCategoryID = "") => {
@@ -112,51 +107,6 @@ const allowLogout = () => {
 	});
 }
 
-const loadModalGallery = () => {
-  // // Clear the works container.
-  ELM_MODAL_GALLERY.replaceChildren();
-
-  // // Get work's list.
-  DATA["works"].forEach(work => {
-    // Clone the template.
-    const newItem = TLE_GALLERY_ITEM_TEMPLATE.content.cloneNode(true);
-
-    // Fill the template with item's data.
-    const itemImage = newItem.querySelector("img");
-    itemImage.src = work.imageUrl;
-    itemImage.alt = work.title;
-
-    const itemIcon = newItem.querySelector("i");
-    itemIcon.setAttribute("data-id", work.id);
-
-    // Append the new work to the works container.
-    ELM_MODAL_GALLERY.appendChild(newItem);
-  });
-}
-
-const addGalleryDeleteAction = () => {
-  ELM_MODAL_GALLERY.addEventListener("click", (e) => {
-    if (e.target.classList.contains("editionModal__galleryDeleteAction")) {
-      e.preventDefault();
-      const elementId = e.target.dataset.id;
-      const elementTitle = DATA["works"].find((work) => work.id == elementId).title;
-      const confirmation = confirm(`Voulez-vous vraiment supprimer "${elementTitle}" ?`);
-      if (confirmation) {
-        deleteWork(parseInt(elementId));
-      }
-    }
-  })
-}
-
-const loadModalCategory = () => {
-  // Clear the categories container.
-  ELM_MODAL_ADD_WORK.querySelector("#addWorkForm__categorySelector").replaceChildren();
-
-  // Get categories's list.
-  Object.keys(DATA["categories"]).forEach(id => {
-    ELM_MODAL_ADD_WORK.querySelector("#addWorkForm__categorySelector").appendChild(createHTMLElementFromString(TTL_CATEGORY_OPTION(id)));
-  });
-}
 
 // INITIALIZATION
 getWorksList().then((worksList) => {
@@ -181,52 +131,9 @@ getWorksList().then((worksList) => {
     const ELM_MODIFICATION_LINK = ELM_PORTOFOLIO_TITLE.appendChild(modificationLink);
     ELM_MODIFICATION_LINK.addEventListener("click", (e) => {
       e.preventDefault();
-      // Open the edition modal
-      ELM_MODAL_GALLERY_VIEWER.showModal();
-      // Add the callback for the add picture button
-      ELM_MODAL_GALLERY_VIEWER.querySelector(".editionModal__action").addEventListener("click", (e) => {
-        e.preventDefault();
-        // Open the add picture modal
-        ELM_MODAL_ADD_WORK.showModal();
-        ELM_MODAL_GALLERY_VIEWER.close();
-      });
+      document.querySelector("#galleryViewerModal").showModal();
     });
 
-    // Add the close callback for the modals
-    ELM_MODAL_GALLERY_VIEWER.querySelector(".editionModal__close").addEventListener("click", (e) => {
-      e.preventDefault();
-      ELM_MODAL_GALLERY_VIEWER.close();
-    });
-
-    ELM_MODAL_ADD_WORK.querySelector(".editionModal__close").addEventListener("click", (e) => {
-      e.preventDefault();
-      ELM_MODAL_ADD_WORK.close();
-    });
-
-    // Add the callback to open the gallery viewer modal if back button is clicked on the add picture modal
-    ELM_MODAL_ADD_WORK.querySelector(".editionModal__back").addEventListener("click", (e) => {
-      e.preventDefault();
-      ELM_MODAL_GALLERY_VIEWER.showModal();
-      ELM_MODAL_ADD_WORK.close();
-    });
-
-    // Add the picture preview on change
-    ELM_MODAL_ADD_WORK.querySelector("#addWorkForm__picture").addEventListener("change", (e) => {
-      const [file] = ELM_MODAL_ADD_WORK.querySelector("#addWorkForm__picture").files;
-      if (file) {
-        ELM_MODAL_ADD_WORK.querySelector(".addWorkForm__previewImage").src = window.URL.createObjectURL(file);
-        ELM_MODAL_ADD_WORK.querySelector(".addWorkForm__imageInput").classList.toggle("hidden");
-        ELM_MODAL_ADD_WORK.querySelector(".addWorkForm__preview").classList.toggle("hidden");
-        ELM_MODAL_ADD_WORK.querySelector(".editionModal__action").disabled = false;
-      }
-    });
-
-    // Add the submit callback
-    ELM_MODAL_ADD_WORK.querySelector(".editionModal__action").addEventListener("click", (e) => {
-      e.preventDefault();
-      addWork();
-      ELM_MODAL_ADD_WORK.close();
-      ELM_MODAL_GALLERY_VIEWER.showModal();
-    });
+    setupModalEvents();
   }
 });
