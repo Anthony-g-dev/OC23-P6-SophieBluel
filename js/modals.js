@@ -31,11 +31,11 @@ const addGalleryDeleteAction = () => {
   ELM_MODAL_GALLERY.addEventListener("click", (e) => {
     if (e.target.classList.contains("editionModal__galleryDeleteAction")) {
       e.preventDefault();
-      const elementId = e.target.dataset.id;
+      const elementId = parseInt(e.target.dataset.id);
       const elementTitle = DATA["works"].find((work) => work.id == elementId).title;
       const confirmation = confirm(`Voulez-vous vraiment supprimer "${elementTitle}" ?`);
       if (confirmation) {
-        deleteWork(parseInt(elementId));
+        deleteWork(elementId);
       }
     }
   })
@@ -50,28 +50,35 @@ const loadModalCategory = () => {
 }
 
 const setupModalEvents = () => {
+  // On click on the "add photo" button in the gallery viewer modal, show the add work modal
   ELM_MODAL_GALLERY_VIEWER.querySelector(".editionModal__action").addEventListener("click", (e) => {
     e.preventDefault();
     ELM_MODAL_ADD_WORK.showModal();
     ELM_MODAL_GALLERY_VIEWER.close();
   });
 
+  // On click on the "close" buttons in the gallery viewer modal, close the modal
   ELM_MODAL_GALLERY_VIEWER.querySelector(".editionModal__close").addEventListener("click", (e) => {
     e.preventDefault();
     ELM_MODAL_GALLERY_VIEWER.close();
   });
 
+  // On click on the "close" buttons in the add work modal, close the modal
   ELM_MODAL_ADD_WORK.querySelector(".editionModal__close").addEventListener("click", (e) => {
     e.preventDefault();
     ELM_MODAL_ADD_WORK.close();
+    resetAddWorkForm();
   });
 
+  // On click on the "back" button in the add work modal, show the gallery viewer modal
   ELM_MODAL_ADD_WORK.querySelector(".editionModal__back").addEventListener("click", (e) => {
     e.preventDefault();
     ELM_MODAL_GALLERY_VIEWER.showModal();
     ELM_MODAL_ADD_WORK.close();
+    resetAddWorkForm();
   });
 
+  // On change of the file input in the add work modal, show the preview image and enable the submit button
   ELM_MODAL_ADD_WORK.querySelector("#addWorkForm__picture").addEventListener("change", (e) => {
     const [file] = ELM_MODAL_ADD_WORK.querySelector("#addWorkForm__picture").files;
     if (file) {
@@ -82,6 +89,7 @@ const setupModalEvents = () => {
     }
   });
 
+  // On click on the "add photo" button in the add work modal, add the work
   ELM_MODAL_ADD_WORK.querySelector(".editionModal__action").addEventListener("click", (e) => {
     e.preventDefault();
     addWork();

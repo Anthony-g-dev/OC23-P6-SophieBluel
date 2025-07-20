@@ -135,5 +135,19 @@ getWorksList().then((worksList) => {
     });
 
     setupModalEvents();
+
+    // Update the submit button state when the form changes
+    ELM_ADD_WORK_FORM.addEventListener("change", (e) => {
+      updateSubmitButtonState();
+    });
+
+    // Update the submit button state when the title input char count changes
+    ELM_ADD_WORK_FORM.querySelector("#addWorkForm__title").addEventListener("input", (e) => {
+      // Create a debounce function to update the submit button state
+      clearTimeout(debounceTimeout);
+      debounceTimeout = setTimeout(() => {
+        updateSubmitButtonState();
+      }, DEBOUNCE_DELAY);
+    });
   }
 });

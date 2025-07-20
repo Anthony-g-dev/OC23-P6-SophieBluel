@@ -1,16 +1,25 @@
 // ROUTES
 const WORKS_ROUTE = "http://localhost:5678/api/works";
 
+// ELEMENTS
+const ELM_ADD_WORK_FORM = ELM_MODAL_ADD_WORK.querySelector("#addWorkForm");
+
 // CONSTANTS
 const FOUR_MB = 4194304; // 4MB
 const ALLOWED_IMAGE_TYPES = ["image/jpg", "image/jpeg", "image/png"];
 
+// VARIABLES
+let debounceTimeout;
+const DEBOUNCE_DELAY = 300; // 300ms
+
 // FUNCTIONS
 // Validate the work form, if the form is valid, return the form data, else return an error message
-const validateAddWorkForm = (pFormData) => {
-  const image = pFormData.get("picture");
-  const title = pFormData.get("title");
-  const category = pFormData.get("categorySelector");
+const validateAddWorkForm = () => {
+  const formData = new FormData(ELM_ADD_WORK_FORM);
+
+  const image = formData.get("picture");
+  const title = formData.get("title");
+  const category = formData.get("categorySelector");
 
   // Validate the image existence, size and type
   if (!(image && image instanceof File && image.size > 0)) {return "Image is required."}
@@ -24,6 +33,12 @@ const validateAddWorkForm = (pFormData) => {
   if (!DATA["categories"][category]) {return "Incorrect category."}
 }
 
+const updateSubmitButtonState = () => {
+  const error = validateAddWorkForm();
+  // If there is no error, enable the submit button else disable it
+  ELM_MODAL_ADD_WORK.querySelector(".editionModal__action").disabled = !!error;
+}
+
 const handleFormError = (error) => {
   console.error(error);
   resetAddWorkForm();
@@ -31,7 +46,7 @@ const handleFormError = (error) => {
 
 const resetAddWorkForm = () => {
   // Reset the form
-  ELM_MODAL_ADD_WORK.querySelector("#addWorkForm").reset();
+  ELM_ADD_WORK_FORM.reset();
   // Remove the preview and show the image input
   ELM_MODAL_ADD_WORK.querySelector(".addWorkForm__previewImage").src = "";
   ELM_MODAL_ADD_WORK.querySelector(".addWorkForm__preview").classList.add("hidden");
@@ -40,10 +55,10 @@ const resetAddWorkForm = () => {
 
 const addWork = async () => {
   // Get the form data
-  const payload = new FormData(ELM_MODAL_ADD_WORK.querySelector("#addWorkForm"));
+  const payload = new FormData(ELM_ADD_WORK_FORM);
   
   // Validate the form
-  const error = validateAddWorkForm(payload);
+  const error = validateAddWorkForm();
   if (error) {handleFormError(error); return;};
 
   try {
