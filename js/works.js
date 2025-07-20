@@ -1,13 +1,50 @@
 // ROUTES
 const WORKS_ROUTE = "http://localhost:5678/api/works";
 
+// CONSTANTS
+const FOUR_MB = 4194304; // 4MB
+const ALLOWED_IMAGE_TYPES = ["image/jpg", "image/jpeg", "image/png"];
+
 // FUNCTIONS
+// Validate the work form, if the form is valid, return the form data, else return an error message
+const validateAddWorkForm = (pFormData) => {
+  const image = pFormData.get("picture");
+  const title = pFormData.get("title");
+  const category = pFormData.get("categorySelector");
+
+  // Validate the image existence, size and type
+  if (!(image && image instanceof File && image.size > 0)) {return "Image is required."}
+  if (image.size > FOUR_MB) {return "Image size is too big. Max size is 4MB."}
+  if (!ALLOWED_IMAGE_TYPES.includes(image.type)) {return "Invalid image type. Allowed types are: jpg, jpeg, png."}
+  
+  // Validate the title
+  if (title.trim() === "") {return "Title is required."}
+
+  // Validate the category
+  if (!DATA["categories"][category]) {return "Incorrect category."}
+}
+
+const handleFormError = (error) => {
+  console.error(error);
+  resetAddWorkForm();
+}
+
+const resetAddWorkForm = () => {
+  // Reset the form
+  ELM_MODAL_ADD_WORK.querySelector("#addWorkForm").reset();
+  // Remove the preview and show the image input
+  ELM_MODAL_ADD_WORK.querySelector(".addWorkForm__previewImage").src = "";
+  ELM_MODAL_ADD_WORK.querySelector(".addWorkForm__preview").classList.add("hidden");
+  ELM_MODAL_ADD_WORK.querySelector(".addWorkForm__imageInput").classList.remove("hidden");
+}
+
 const addWork = async () => {
-  // Create Request Body
-  const reqBody = new FormData();
-  reqBody.append("image", ELM_MODAL_ADD_WORK.querySelector("#addWorkForm__picture").files[0]);
-  reqBody.append("title", ELM_MODAL_ADD_WORK.querySelector("#addWorkForm__title").value);
-  reqBody.append("category", ELM_MODAL_ADD_WORK.querySelector("#addWorkForm__categorySelector").value);
+  // Get the form data
+  const payload = new FormData(ELM_MODAL_ADD_WORK.querySelector("#addWorkForm"));
+  
+  // Validate the form
+  const error = validateAddWorkForm(payload);
+  if (error) {handleFormError(error); return;};
 
   try {
     // Send the Request
@@ -16,18 +53,13 @@ const addWork = async () => {
       headers: {
         "Authorization": `Bearer ${sessionStorage.userToken}`,
       },
-      body: reqBody,
+      body: payload,
     });
     
     if (res.ok) {
       // Update works
       getWorksList().then((worksList) => {
-        // Reset the form and hide the preview
-        ELM_MODAL_ADD_WORK.querySelector("#addWorkForm").reset();
-        ELM_MODAL_ADD_WORK.querySelector(".addWorkForm__previewImage").src = "";
-        ELM_MODAL_ADD_WORK.querySelector(".addWorkForm__preview").classList.toggle("hidden");
-        ELM_MODAL_ADD_WORK.querySelector(".addWorkForm__imageInput").classList.toggle("hidden");
-        
+        resetAddWorkForm();
         getCategoriesList(worksList);
         showWorks();
         loadModalGallery();
