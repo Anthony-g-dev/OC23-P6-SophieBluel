@@ -88,12 +88,6 @@
   font-size: 16;
 }
 
-.form__input {
-  padding: 16px;
-  box-shadow: 0px 4px 14px 0px rgba(0, 0, 0, 0.09);
-  color: #444444;
-  font-size: 14px;
-}
 .form__divider {
   margin: 47px 0 32px 0;
   width: 100%;
