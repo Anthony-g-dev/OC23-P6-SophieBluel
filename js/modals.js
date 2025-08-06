@@ -67,7 +67,6 @@ const setupModalEvents = () => {
   ELM_MODAL_ADD_WORK.querySelector(".editionModal__close").addEventListener("click", (e) => {
     e.preventDefault();
     ELM_MODAL_ADD_WORK.close();
-    resetAddWorkForm();
   });
 
   // On click on the "back" button in the add work modal, show the gallery viewer modal
@@ -75,6 +74,10 @@ const setupModalEvents = () => {
     e.preventDefault();
     ELM_MODAL_GALLERY_VIEWER.showModal();
     ELM_MODAL_ADD_WORK.close();
+  });
+
+  // On close the modal, reset the form
+  ELM_MODAL_ADD_WORK.addEventListener("close", () => {
     resetAddWorkForm();
   });
 
