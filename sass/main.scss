@@ -59,17 +59,36 @@ nav ul {
 	display: flex;
 	align-items: center;
 	list-style-type: none;
-
+	gap: 42px;
+	&:last-child {
+		margin-right: 21px;
+	}
 }
 
 nav a {
-	padding: 0 10px;
 	font-size: 1.2em;
 	cursor: pointer;
 }
 
 a:hover {
 	color: $WindsorTan;
+}
+
+input {
+	padding: 15px;
+	font-size: 1.2em;
+	border: none;
+	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
+	&[type=submit] {
+		font-family: 'Syne';
+		font-weight: 700;
+		color: white;
+		background-color: $DeepBottleGreen;
+		margin : 2em auto;
+		width: 180px;
+		text-align: center;
+		border-radius: 60px;
+	}
 }
 
 footer {
@@ -96,12 +115,6 @@ footer nav a {
 		text-align: left;
 		display: flex;
 		flex-direction: column;
-	}
-	input {
-		padding: 15px;
-		font-size: 1.2em;
-		border: none;
-		box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
 	}
 	label {
 		margin: 2em 0 1em 0;
